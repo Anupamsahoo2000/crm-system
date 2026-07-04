@@ -1,5 +1,7 @@
 # Mini Visitor CRM System
 
+**🚀 Live Demo**: [https://crm-system-vwy4.vercel.app/](https://crm-system-vwy4.vercel.app/)
+
 A full-stack Mini Visitor CRM System designed to register customers and track visitor check-ins, checkout history, and real-time dashboard analytics. Built with a React & Tailwind CSS v4 frontend and a Node.js, Express, and PostgreSQL (via Sequelize ORM) backend.
 
 ---
