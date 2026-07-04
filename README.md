@@ -5,33 +5,38 @@ A full-stack Mini Visitor CRM System designed to register customers and track vi
 ---
 
 ## Tech Stack
-* **Frontend**: React, Vite, Tailwind CSS v4, React Router, Axios, Lucide Icons
-* **Backend**: Node.js, Express, Sequelize ORM, JWT, BcryptJS
-* **Database**: PostgreSQL
+
+- **Frontend**: React, Vite, Tailwind CSS v4, React Router, Axios, Lucide Icons
+- **Backend**: Node.js, Express, Sequelize ORM, JWT, BcryptJS
+- **Database**: PostgreSQL
 
 ---
 
 ## Sequelize Models
 
 ### 1. Customer Model (`backend/models/Customer.js`)
+
 Tracks registered companies/customers.
-* `id` (UUID): Primary Key (Auto-generated)
-* `name` (String): Required, customer name
-* `email` (String): Required, must be a unique and valid email address
-* `phone` (String): Required, must be a valid 10-digit or international format
-* `company` (String): Required, company name
-* `status` (Enum): `'Active'` or `'Inactive'` (Default: `'Active'`)
+
+- `id` (UUID): Primary Key (Auto-generated)
+- `name` (String): Required, customer name
+- `email` (String): Required, must be a unique and valid email address
+- `phone` (String): Required, must be a valid 10-digit or international format
+- `company` (String): Required, company name
+- `status` (Enum): `'Active'` or `'Inactive'` (Default: `'Active'`)
 
 ### 2. Visitor Model (`backend/models/Visitor.js`)
+
 Tracks visitor registrations and onsite durations.
-* `id` (UUID): Primary Key (Auto-generated)
-* `visitorName` (String): Required, visitor name
-* `phone` (String): Required, must be a valid phone number
-* `personToMeet` (String): Required, host staff member's name
-* `purpose` (String): Required, purpose of visit
-* `checkInTime` (Date): Required, defaulted to current time
-* `checkOutTime` (Date): Nullable, timestamp set on check-out
-* `status` (Enum): `'Checked-In'` or `'Checked-Out'` (Default: `'Checked-In'`)
+
+- `id` (UUID): Primary Key (Auto-generated)
+- `visitorName` (String): Required, visitor name
+- `phone` (String): Required, must be a valid phone number
+- `personToMeet` (String): Required, host staff member's name
+- `purpose` (String): Required, purpose of visit
+- `checkInTime` (Date): Required, defaulted to current time
+- `checkOutTime` (Date): Nullable, timestamp set on check-out
+- `status` (Enum): `'Checked-In'` or `'Checked-Out'` (Default: `'Checked-In'`)
 
 ---
 
@@ -40,33 +45,39 @@ Tracks visitor registrations and onsite durations.
 All protected routes require a JWT token passed in the header as: `Authorization: Bearer <token>`.
 
 ### Authentication
-* `POST /api/auth/login` - Authenticate admin credentials and return JWT token.
+
+- `POST /api/auth/login` - Authenticate admin credentials and return JWT token.
 
 ### Customers (Protected)
-* `GET /api/customers?search=<query>` - Get all customers, with optional name/company search.
-* `POST /api/customers` - Create a new customer record.
-* `PUT /api/customers/:id` - Edit a customer record.
-* `DELETE /api/customers/:id` - Remove a customer record.
+
+- `GET /api/customers?search=<query>` - Get all customers, with optional name/company search.
+- `POST /api/customers` - Create a new customer record.
+- `PUT /api/customers/:id` - Edit a customer record.
+- `DELETE /api/customers/:id` - Remove a customer record.
 
 ### Visitors (Protected)
-* `POST /api/visitors/checkin` - Check in a visitor.
-* `PUT /api/visitors/checkout/:id` - Check out an active visitor (sets check-out timestamp and status).
-* `GET /api/visitors/history` - Retrieve chronological visitor logs.
+
+- `POST /api/visitors/checkin` - Check in a visitor.
+- `PUT /api/visitors/checkout/:id` - Check out an active visitor (sets check-out timestamp and status).
+- `GET /api/visitors/history` - Retrieve chronological visitor logs.
 
 ### Dashboard (Protected)
-* `GET /api/dashboard/stats` - Fetch aggregate stats (Total Customers, Active Customers, Visitors Today, Checked-In Visitors) and recent records.
+
+- `GET /api/dashboard/stats` - Fetch aggregate stats (Total Customers, Active Customers, Visitors Today, Checked-In Visitors) and recent records.
 
 ---
 
 ## Getting Started
 
 ### Prerequisites
-* **Node.js** (v18 or higher)
-* **PostgreSQL** running locally
+
+- **Node.js** (v18 or higher)
+- **PostgreSQL** running locally
 
 ---
 
 ### Step 1: Clone and Configure Backend
+
 1. Navigate to the `backend` directory:
    ```bash
    cd backend
@@ -79,7 +90,7 @@ All protected routes require a JWT token passed in the header as: `Authorization
    ```env
    PORT=5000
    NODE_ENV=development
-   DB_HOST=127.0.0.1
+   DB_HOST=localhost
    DB_PORT=5432
    DB_USER=your_postgres_user
    DB_PASSWORD=your_postgres_password
@@ -88,18 +99,21 @@ All protected routes require a JWT token passed in the header as: `Authorization
    JWT_EXPIRE=24h
    ```
 4. Start the backend server:
+
    ```bash
    # Production mode
    npm start
-   
+
    # Development mode (with nodemon reload)
    npm run dev
    ```
-   *Note: On startup, Sequelize will automatically connect to PostgreSQL and create/sync the database and tables.*
+
+   _Note: On startup, Sequelize will automatically connect to PostgreSQL and create/sync the database and tables._
 
 ---
 
 ### Step 2: Configure and Start Frontend
+
 1. Navigate to the `frontend` directory:
    ```bash
    cd ../frontend
@@ -117,6 +131,8 @@ All protected routes require a JWT token passed in the header as: `Authorization
 ---
 
 ## Demo Credentials
+
 Use these dummy credentials to log in to the dashboard:
-* **Email**: `admin@crm.com`
-* **Password**: `password123`
+
+- **Email**: `admin@crm.com`
+- **Password**: `password123`
