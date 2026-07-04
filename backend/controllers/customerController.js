@@ -31,9 +31,9 @@ exports.createCustomer = async (req, res) => {
   }
 };
 
-// Get all customers (with optional search)
+// Get all customers (with optional search and pagination)
 exports.getCustomers = async (req, res) => {
-  const { search } = req.query;
+  const { search, page, limit } = req.query;
   let whereClause = {};
 
   if (search) {
@@ -46,6 +46,27 @@ exports.getCustomers = async (req, res) => {
   }
 
   try {
+    if (page || limit) {
+      const pageNum = parseInt(page) || 1;
+      const limitNum = parseInt(limit) || 10;
+      const offset = (pageNum - 1) * limitNum;
+
+      const { count, rows } = await Customer.findAndCountAll({
+        where: whereClause,
+        order: [['createdAt', 'DESC']],
+        limit: limitNum,
+        offset: offset
+      });
+
+      return res.json({
+        total: count,
+        page: pageNum,
+        limit: limitNum,
+        totalPages: Math.ceil(count / limitNum),
+        customers: rows
+      });
+    }
+
     const customers = await Customer.findAll({
       where: whereClause,
       order: [['createdAt', 'DESC']]

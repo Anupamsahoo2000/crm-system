@@ -1,0 +1,53 @@
+services:
+  postgres_db:
+    image: postgres:16-alpine
+    container_name: crm_postgres_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=visitor_crm
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d visitor_crm"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: crm_backend
+    environment:
+      - PORT=5000
+      - NODE_ENV=production
+      - DB_HOST=postgres_db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=visitor_crm
+      - JWT_SECRET=super_secret_jwt_key_12345
+      - JWT_EXPIRE=24h
+    ports:
+      - "5001:5000"
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:5001/api
+    container_name: crm_frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

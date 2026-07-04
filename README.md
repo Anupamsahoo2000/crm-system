@@ -130,6 +130,39 @@ All protected routes require a JWT token passed in the header as: `Authorization
 
 ---
 
+---
+
+### Step 3: Run with Docker Compose (Alternative)
+
+For a fully containerized deployment, you can run the entire stack (PostgreSQL, backend, and frontend) using Docker and Docker Compose.
+
+#### Prerequisites
+- **Docker** and **Docker Compose** installed on your system.
+
+#### Build and Start Containers
+From the root directory of the project, run:
+```bash
+docker compose up -d --build
+```
+
+This single command will:
+1. Spin up a PostgreSQL 16 database.
+2. Build and launch the Node.js backend on `http://localhost:5001`.
+3. Build the frontend React app and serve it via Nginx on **`http://localhost:8080`**.
+
+#### Stop Containers
+To stop the services and retain data in postgres:
+```bash
+docker compose down
+```
+
+To stop services and completely delete database volumes:
+```bash
+docker compose down -v
+```
+
+---
+
 ## Demo Credentials
 
 Use these dummy credentials to log in to the dashboard:

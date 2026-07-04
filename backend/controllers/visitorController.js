@@ -65,9 +65,31 @@ exports.checkOutVisitor = async (req, res) => {
   }
 };
 
-// Get visitor history
+// Get visitor history (with optional pagination)
 exports.getVisitorHistory = async (req, res) => {
+  const { page, limit } = req.query;
+
   try {
+    if (page || limit) {
+      const pageNum = parseInt(page) || 1;
+      const limitNum = parseInt(limit) || 10;
+      const offset = (pageNum - 1) * limitNum;
+
+      const { count, rows } = await Visitor.findAndCountAll({
+        order: [['checkInTime', 'DESC']],
+        limit: limitNum,
+        offset: offset
+      });
+
+      return res.json({
+        total: count,
+        page: pageNum,
+        limit: limitNum,
+        totalPages: Math.ceil(count / limitNum),
+        visitors: rows
+      });
+    }
+
     const visitors = await Visitor.findAll({
       order: [['checkInTime', 'DESC']]
     });

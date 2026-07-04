@@ -10,11 +10,13 @@ import {
   History 
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Dashboard = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const { theme } = useAuth();
 
   useEffect(() => {
     fetchDashboardData();
@@ -47,12 +49,18 @@ const Dashboard = () => {
 
   if (error) {
     return (
-      <div className="bg-rose-950/20 border border-rose-900/50 p-6 rounded-2xl text-rose-300 flex flex-col items-center gap-3 text-center">
-        <AlertCircle className="h-10 w-10 text-rose-400" />
+      <div className={`border p-6 rounded-2xl flex flex-col items-center gap-3 text-center ${
+        theme === 'dark' ? 'bg-rose-950/20 border-rose-900/50 text-rose-300' : 'bg-rose-50 border-rose-200 text-rose-700'
+      }`}>
+        <AlertCircle className="h-10 w-10 text-rose-500" />
         <p className="font-semibold">{error}</p>
         <button 
           onClick={fetchDashboardData}
-          className="mt-2 px-4 py-2 bg-rose-900/40 hover:bg-rose-900/60 text-white rounded-xl text-xs font-semibold transition-all border border-rose-800"
+          className={`mt-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all border ${
+            theme === 'dark' 
+              ? 'bg-rose-900/40 hover:bg-rose-900/60 text-white border-rose-800' 
+              : 'bg-white hover:bg-rose-100 text-rose-700 border-rose-300 shadow-sm'
+          }`}
         >
           Try Again
         </button>
@@ -68,7 +76,9 @@ const Dashboard = () => {
       value: stats?.totalCustomers || 0,
       description: 'Registered companies',
       icon: Users,
-      colorClass: 'from-blue-600/20 to-cyan-600/20 border-blue-500/30 text-blue-400',
+      colorClass: theme === 'dark' 
+        ? 'from-blue-600/20 to-cyan-600/20 border-blue-500/30 text-blue-400 bg-slate-900/45' 
+        : 'from-blue-50 to-cyan-50 border-blue-200 text-blue-600 bg-white',
       glowClass: 'bg-blue-500/10'
     },
     {
@@ -76,7 +86,9 @@ const Dashboard = () => {
       value: stats?.activeCustomers || 0,
       description: 'Active engagements',
       icon: TrendingUp,
-      colorClass: 'from-emerald-600/20 to-teal-600/20 border-emerald-500/30 text-emerald-400',
+      colorClass: theme === 'dark' 
+        ? 'from-emerald-600/20 to-teal-600/20 border-emerald-500/30 text-emerald-400 bg-slate-900/45' 
+        : 'from-emerald-50 to-teal-50 border-emerald-200 text-emerald-600 bg-white',
       glowClass: 'bg-emerald-500/10'
     },
     {
@@ -84,7 +96,9 @@ const Dashboard = () => {
       value: stats?.visitorsToday || 0,
       description: 'Checked-in since midnight',
       icon: Clock,
-      colorClass: 'from-amber-600/20 to-orange-600/20 border-amber-500/30 text-amber-400',
+      colorClass: theme === 'dark' 
+        ? 'from-amber-600/20 to-orange-600/20 border-amber-500/30 text-amber-400 bg-slate-900/45' 
+        : 'from-amber-50 to-orange-50 border-amber-200 text-amber-600 bg-white',
       glowClass: 'bg-amber-500/10'
     },
     {
@@ -92,7 +106,9 @@ const Dashboard = () => {
       value: stats?.checkedInVisitors || 0,
       description: 'Currently in the premises',
       icon: UserCheck,
-      colorClass: 'from-violet-600/20 to-fuchsia-600/20 border-violet-500/30 text-violet-400',
+      colorClass: theme === 'dark' 
+        ? 'from-violet-600/20 to-fuchsia-600/20 border-violet-500/30 text-violet-400 bg-slate-900/45' 
+        : 'from-violet-50 to-fuchsia-50 border-violet-200 text-violet-600 bg-white',
       glowClass: 'bg-violet-500/10'
     }
   ];
@@ -100,11 +116,15 @@ const Dashboard = () => {
   return (
     <div className="space-y-8">
       {/* Welcome Banner */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-slate-900 to-violet-950/40 border border-slate-800/80 p-8 rounded-2xl shadow-xl">
+      <div className={`relative overflow-hidden border p-8 rounded-2xl transition-all duration-200 ${
+        theme === 'dark' 
+          ? 'bg-gradient-to-r from-slate-900 via-slate-900 to-violet-950/40 border-slate-800/80 shadow-xl' 
+          : 'bg-gradient-to-r from-white via-white to-violet-50/20 border-slate-200 shadow-md'
+      }`}>
         <div className="absolute right-0 top-0 -translate-y-12 translate-x-12 w-64 h-64 bg-violet-600/10 rounded-full blur-[80px]"></div>
         <div className="z-10 relative">
-          <h3 className="text-2xl font-bold text-slate-100">Welcome to CRM Command Center</h3>
-          <p className="text-slate-400 text-sm mt-1 max-w-xl">
+          <h3 className={`text-2xl font-bold ${theme === 'dark' ? 'text-slate-100' : 'text-slate-850'}`}>Welcome to CRM Command Center</h3>
+          <p className={`text-sm mt-1 max-w-xl ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
             Monitor and manage onsite visits, customer relations, and check-in logs in real-time.
           </p>
         </div>
@@ -117,19 +137,19 @@ const Dashboard = () => {
           return (
             <div 
               key={index}
-              className={`relative overflow-hidden bg-gradient-to-br ${card.colorClass} border p-6 rounded-2xl shadow-lg transition-all duration-300 hover:-translate-y-1`}
+              className={`relative overflow-hidden border p-6 rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-1 ${card.colorClass}`}
             >
               <div className={`absolute -right-4 -bottom-4 w-24 h-24 rounded-full blur-2xl ${card.glowClass}`}></div>
               <div className="flex justify-between items-start z-10 relative">
                 <div>
-                  <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider">{card.title}</p>
-                  <p className="text-3xl font-extrabold text-slate-100 mt-2">{card.value}</p>
+                  <p className={`text-xs font-semibold uppercase tracking-wider ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>{card.title}</p>
+                  <p className={`text-3xl font-extrabold mt-2 ${theme === 'dark' ? 'text-slate-100' : 'text-slate-800'}`}>{card.value}</p>
                 </div>
-                <div className="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+                <div className={`p-2.5 rounded-xl border ${theme === 'dark' ? 'bg-slate-900/60 border-slate-800' : 'bg-slate-100/60 border-slate-200'}`}>
                   <Icon className="h-5 w-5" />
                 </div>
               </div>
-              <p className="text-[11px] text-slate-500 font-medium mt-3 z-10 relative">{card.description}</p>
+              <p className={`text-[11px] font-medium mt-3 z-10 relative ${theme === 'dark' ? 'text-slate-500' : 'text-slate-400'}`}>{card.description}</p>
             </div>
           );
         })}
@@ -139,16 +159,18 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         
         {/* Recent Visitors */}
-        <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
+        <div className={`border rounded-2xl p-6 shadow-md flex flex-col justify-between transition-all duration-200 ${
+          theme === 'dark' ? 'bg-slate-900/60 border-slate-800/80 shadow-xl' : 'bg-white border-slate-200'
+        }`}>
           <div>
             <div className="flex justify-between items-center mb-6">
-              <h4 className="text-md font-bold text-slate-200 flex items-center gap-2">
-                <History className="h-4 w-4 text-violet-400" />
+              <h4 className={`text-md font-bold flex items-center gap-2 ${theme === 'dark' ? 'text-slate-250' : 'text-slate-800'}`}>
+                <History className="h-4 w-4 text-violet-500" />
                 Recent Visitors
               </h4>
               <Link 
                 to="/visitors" 
-                className="text-xs text-violet-400 hover:text-violet-300 font-semibold transition"
+                className="text-xs text-violet-500 hover:text-violet-600 font-semibold transition"
               >
                 Manage Visitors
               </Link>
@@ -163,23 +185,31 @@ const Dashboard = () => {
                 {recentVisitors?.map((visitor) => (
                   <div 
                     key={visitor.id} 
-                    className="flex justify-between items-center p-3.5 bg-slate-950/40 border border-slate-800/50 rounded-xl hover:border-slate-800 transition"
+                    className={`flex justify-between items-center p-3.5 border rounded-xl transition ${
+                      theme === 'dark' 
+                        ? 'bg-slate-950/40 border-slate-800/50 hover:border-slate-800' 
+                        : 'bg-slate-50/50 border-slate-200/60 hover:border-slate-250 hover:bg-slate-50'
+                    }`}
                   >
                     <div>
-                      <p className="text-sm font-semibold text-slate-200">{visitor.visitorName}</p>
-                      <p className="text-xs text-slate-500 mt-0.5">
-                        Meeting: <span className="text-slate-400">{visitor.personToMeet}</span> ({visitor.purpose})
+                      <p className={`text-sm font-semibold ${theme === 'dark' ? 'text-slate-200' : 'text-slate-850'}`}>{visitor.visitorName}</p>
+                      <p className={`text-xs mt-0.5 ${theme === 'dark' ? 'text-slate-500' : 'text-slate-500'}`}>
+                        Meeting: <span className={theme === 'dark' ? 'text-slate-400' : 'text-slate-700'}>{visitor.personToMeet}</span> ({visitor.purpose})
                       </p>
                     </div>
                     <div className="text-right">
                       <span className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-semibold tracking-wide uppercase ${
                         visitor.status === 'Checked-In'
-                          ? 'bg-emerald-950/50 border border-emerald-900/50 text-emerald-400'
-                          : 'bg-slate-800/80 border border-slate-700/80 text-slate-400'
+                          ? theme === 'dark'
+                            ? 'bg-emerald-950/50 border border-emerald-900/50 text-emerald-400'
+                            : 'bg-emerald-50 border border-emerald-100 text-emerald-600'
+                          : theme === 'dark'
+                            ? 'bg-slate-800/80 border border-slate-700/80 text-slate-400'
+                            : 'bg-slate-100 border border-slate-200 text-slate-500'
                       }`}>
                         {visitor.status}
                       </span>
-                      <p className="text-[10px] text-slate-500 mt-1.5">
+                      <p className={`text-[10px] mt-1.5 ${theme === 'dark' ? 'text-slate-500' : 'text-slate-450'}`}>
                         {new Date(visitor.checkInTime).toLocaleTimeString(undefined, {
                           hour: '2-digit',
                           minute: '2-digit'
@@ -194,16 +224,18 @@ const Dashboard = () => {
         </div>
 
         {/* Recent Customers */}
-        <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
+        <div className={`border rounded-2xl p-6 shadow-md flex flex-col justify-between transition-all duration-200 ${
+          theme === 'dark' ? 'bg-slate-900/60 border-slate-800/80 shadow-xl' : 'bg-white border-slate-200'
+        }`}>
           <div>
             <div className="flex justify-between items-center mb-6">
-              <h4 className="text-md font-bold text-slate-200 flex items-center gap-2">
-                <UserPlus className="h-4 w-4 text-emerald-400" />
+              <h4 className={`text-md font-bold flex items-center gap-2 ${theme === 'dark' ? 'text-slate-250' : 'text-slate-800'}`}>
+                <UserPlus className="h-4 w-4 text-emerald-500" />
                 Newly Added Customers
               </h4>
               <Link 
                 to="/customers" 
-                className="text-xs text-emerald-400 hover:text-emerald-300 font-semibold transition"
+                className="text-xs text-emerald-500 hover:text-emerald-600 font-semibold transition"
               >
                 Manage Customers
               </Link>
@@ -218,21 +250,29 @@ const Dashboard = () => {
                 {recentCustomers?.map((customer) => (
                   <div 
                     key={customer.id} 
-                    className="flex justify-between items-center p-3.5 bg-slate-950/40 border border-slate-800/50 rounded-xl hover:border-slate-800 transition"
+                    className={`flex justify-between items-center p-3.5 border rounded-xl transition ${
+                      theme === 'dark' 
+                        ? 'bg-slate-950/40 border-slate-800/50 hover:border-slate-800' 
+                        : 'bg-slate-50/50 border-slate-200/60 hover:border-slate-250 hover:bg-slate-50'
+                    }`}
                   >
                     <div>
-                      <p className="text-sm font-semibold text-slate-200">{customer.name}</p>
-                      <p className="text-xs text-slate-500 mt-0.5">{customer.company}</p>
+                      <p className={`text-sm font-semibold ${theme === 'dark' ? 'text-slate-200' : 'text-slate-850'}`}>{customer.name}</p>
+                      <p className={`text-xs mt-0.5 ${theme === 'dark' ? 'text-slate-500' : 'text-slate-500'}`}>{customer.company}</p>
                     </div>
                     <div className="text-right">
                       <span className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-semibold tracking-wide uppercase ${
                         customer.status === 'Active'
-                          ? 'bg-emerald-950/50 border border-emerald-900/50 text-emerald-400'
-                          : 'bg-rose-950/50 border border-rose-900/50 text-rose-400'
+                          ? theme === 'dark'
+                            ? 'bg-emerald-950/50 border border-emerald-900/50 text-emerald-400'
+                            : 'bg-emerald-50 border border-emerald-100 text-emerald-600'
+                          : theme === 'dark'
+                            ? 'bg-rose-950/50 border border-rose-900/50 text-rose-400'
+                            : 'bg-rose-50 border border-rose-100 text-rose-600'
                       }`}>
                         {customer.status}
                       </span>
-                      <p className="text-[10px] text-slate-500 mt-1.5">
+                      <p className={`text-[10px] mt-1.5 ${theme === 'dark' ? 'text-slate-500' : 'text-slate-450'}`}>
                         {new Date(customer.createdAt).toLocaleDateString(undefined, {
                           month: 'short',
                           day: 'numeric'
