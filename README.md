@@ -11,39 +11,27 @@ A full-stack Mini Visitor CRM System designed to register customers and track vi
 
 ---
 
-## Database Schemas
+## Sequelize Models
 
-### 1. Customer Model
+### 1. Customer Model (`backend/models/Customer.js`)
 Tracks registered companies/customers.
-```sql
-CREATE TABLE "Customers" (
-  "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  "name" VARCHAR(255) NOT NULL,
-  "email" VARCHAR(255) NOT NULL UNIQUE,
-  "phone" VARCHAR(255) NOT NULL,
-  "company" VARCHAR(255) NOT NULL,
-  "status" VARCHAR(255) DEFAULT 'Active' CHECK ("status" IN ('Active', 'Inactive')),
-  "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL,
-  "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL
-);
-```
+* `id` (UUID): Primary Key (Auto-generated)
+* `name` (String): Required, customer name
+* `email` (String): Required, must be a unique and valid email address
+* `phone` (String): Required, must be a valid 10-digit or international format
+* `company` (String): Required, company name
+* `status` (Enum): `'Active'` or `'Inactive'` (Default: `'Active'`)
 
-### 2. Visitor Model
+### 2. Visitor Model (`backend/models/Visitor.js`)
 Tracks visitor registrations and onsite durations.
-```sql
-CREATE TABLE "Visitors" (
-  "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  "visitorName" VARCHAR(255) NOT NULL,
-  "phone" VARCHAR(255) NOT NULL,
-  "personToMeet" VARCHAR(255) NOT NULL,
-  "purpose" VARCHAR(255) NOT NULL,
-  "checkInTime" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-  "checkOutTime" TIMESTAMP WITH TIME ZONE,
-  "status" VARCHAR(255) DEFAULT 'Checked-In' CHECK ("status" IN ('Checked-In', 'Checked-Out')),
-  "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL,
-  "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL
-);
-```
+* `id` (UUID): Primary Key (Auto-generated)
+* `visitorName` (String): Required, visitor name
+* `phone` (String): Required, must be a valid phone number
+* `personToMeet` (String): Required, host staff member's name
+* `purpose` (String): Required, purpose of visit
+* `checkInTime` (Date): Required, defaulted to current time
+* `checkOutTime` (Date): Nullable, timestamp set on check-out
+* `status` (Enum): `'Checked-In'` or `'Checked-Out'` (Default: `'Checked-In'`)
 
 ---
 
