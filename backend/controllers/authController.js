@@ -19,8 +19,9 @@ exports.login = async (req, res) => {
   }
 
   try {
+    const trimmedEmail = email.trim();
     // Check for user
-    if (email.toLowerCase() !== ADMIN_USER.email.toLowerCase()) {
+    if (trimmedEmail.toLowerCase() !== ADMIN_USER.email.toLowerCase()) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
