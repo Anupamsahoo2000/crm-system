@@ -12,10 +12,10 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/customers", require("./routes/customerRoutes"));
-app.use("/api/visitors", require("./routes/visitorRoutes"));
-app.use("/api/dashboard", require("./routes/dashboardRoutes"));
+app.use("/auth", require("./routes/authRoutes"));
+app.use("/customers", require("./routes/customerRoutes"));
+app.use("/visitors", require("./routes/visitorRoutes"));
+app.use("/dashboard", require("./routes/dashboardRoutes"));
 
 // Default Route
 app.get("/", (req, res) => {
