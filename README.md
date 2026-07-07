@@ -48,24 +48,24 @@ All protected routes require a JWT token passed in the header as: `Authorization
 
 ### Authentication
 
-- `POST /api/auth/login` - Authenticate admin credentials and return JWT token.
+- `POST /auth/login` - Authenticate admin credentials and return JWT token.
 
 ### Customers (Protected)
 
-- `GET /api/customers?search=<query>` - Get all customers, with optional name/company search.
-- `POST /api/customers` - Create a new customer record.
-- `PUT /api/customers/:id` - Edit a customer record.
-- `DELETE /api/customers/:id` - Remove a customer record.
+- `GET /customers?search=<query>` - Get all customers, with optional name/company search.
+- `POST /customers` - Create a new customer record.
+- `PUT /customers/:id` - Edit a customer record.
+- `DELETE /customers/:id` - Remove a customer record.
 
 ### Visitors (Protected)
 
-- `POST /api/visitors/checkin` - Check in a visitor.
-- `PUT /api/visitors/checkout/:id` - Check out an active visitor (sets check-out timestamp and status).
-- `GET /api/visitors/history` - Retrieve chronological visitor logs.
+- `POST /visitors/checkin` - Check in a visitor.
+- `PUT /visitors/checkout/:id` - Check out an active visitor (sets check-out timestamp and status).
+- `GET /visitors/history` - Retrieve chronological visitor logs.
 
 ### Dashboard (Protected)
 
-- `GET /api/dashboard/stats` - Fetch aggregate stats (Total Customers, Active Customers, Visitors Today, Checked-In Visitors) and recent records.
+- `GET /dashboard/stats` - Fetch aggregate stats (Total Customers, Active Customers, Visitors Today, Checked-In Visitors) and recent records.
 
 ---
 
@@ -139,26 +139,33 @@ All protected routes require a JWT token passed in the header as: `Authorization
 For a fully containerized deployment, you can run the entire stack (PostgreSQL, backend, and frontend) using Docker and Docker Compose.
 
 #### Prerequisites
+
 - **Docker** and **Docker Compose** installed on your system.
 
 #### Build and Start Containers
+
 From the root directory of the project, run:
+
 ```bash
 docker compose up -d --build
 ```
 
 This single command will:
+
 1. Spin up a PostgreSQL 16 database.
 2. Build and launch the Node.js backend on `http://localhost:5001`.
 3. Build the frontend React app and serve it via Nginx on **`http://localhost:8080`**.
 
 #### Stop Containers
+
 To stop the services and retain data in postgres:
+
 ```bash
 docker compose down
 ```
 
 To stop services and completely delete database volumes:
+
 ```bash
 docker compose down -v
 ```
